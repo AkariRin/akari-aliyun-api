@@ -5,12 +5,12 @@ from shutil import rmtree
 from setuptools import setup, Command
 
 NAME = "aliyun-api-py"
-DESCRIPTION = "My short description for my project."
+DESCRIPTION = "A simple library for Aliyun API"
 URL = "https://github.com/AkariRin/aliyun-api-py"
 EMAIL = "akaririn1028@gmail.com"
 AUTHOR = "Akari Rin"
 REQUIRES_PYTHON = ">=3.6.0"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 REQUIRED = ["requests", "pytz"]
 EXTRAS = {}
 
