@@ -57,7 +57,7 @@ class Api:
             self.headers["Authorization"] = (f"{self.algorithm} Credential={self.access_key_id},"
                                              f"SignedHeaders={signed_headers},Signature={signature}")
         except Exception as e:
-            print(e)
+            return e
 
         # 发起请求
         url = f"https://{self.host}{self.canonical_uri}"
@@ -70,4 +70,4 @@ class Api:
             response.raise_for_status()
             return response.text
         except requests.RequestException as e:
-            print(e)
+            return e

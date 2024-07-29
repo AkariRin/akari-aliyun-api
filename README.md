@@ -1,5 +1,5 @@
 # Aliyun API Python
-一个简单的阿里云API Python封装库与SDK
+一个简单的阿里云API Python封装库
 ## 使用API封装库
 ```python
 import aliyun_api_py
@@ -10,21 +10,21 @@ request.param["your-param"] = "sth"
 request.body["your-body"] = "sth"
 print(request.exec())
 ```
-`access_key_id`：
+`access_key_id`：阿里云AccessKey ID
 
-`access_key_secret`：
+`access_key_secret`：阿里云AccessKey Secret
 
-`http_method`：
+`http_method`：http请求方式，例如`POST`
 
-`host`：
+`host`：服务地址，详见[服务区域列表](https://api.aliyun.com/product/Ecs)
 
-`uri`：
+`uri`：资源路径
 
-`x_acs_action`：
+`x_acs_action`：API名称
 
-`x_acs_version`：
+`x_acs_version`：API版本
 
-`algorithm`：
+`algorithm`：签名算法，默认为`ACS3-HMAC-SHA256`，一般情况下无需更改
 
 更多参数信息详见[请求结构和签名机制](https://help.aliyun.com/zh/sdk/product-overview/v3-request-structure-and-signature)
 ## 使用SDK
