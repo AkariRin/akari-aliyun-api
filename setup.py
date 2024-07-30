@@ -15,15 +15,12 @@ EXTRAS = {}
 root = os.path.abspath(os.path.dirname(__file__))
 
 # 加载readme
-try:
-    with io.open(os.path.join(root, "README.md"), encoding="utf-8") as f:
-        long_description = "\n" + f.read()
-except FileNotFoundError:
-    long_description = DESCRIPTION
+with io.open(os.path.join(root, "README.md"), encoding="utf-8") as f:
+    long_description = "\n" + f.read()
 
 # 加载版本号
 version = {}
-with open(os.path.join(root, 'your_package_name', '__version__.py')) as f:
+with open(os.path.join(root, 'aliyun-api-py', '__version__.py')) as f:
     exec(f.read(), version)
 
 setup(
