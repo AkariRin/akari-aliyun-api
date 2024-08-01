@@ -27,6 +27,15 @@ print(request.exec())
 `algorithm`：签名算法，默认为`ACS3-HMAC-SHA256`，一般情况下无需更改
 
 更多参数信息详见[请求结构和签名机制](https://help.aliyun.com/zh/sdk/product-overview/v3-request-structure-and-signature)
+### 返回格式
+当请求正确发出时，返回格式如下：
+```json
+{"status_code": "状态码",
+ "headers": "响应头",
+ "body": "返回的内容"
+}
+```
+若请求出错，则会抛出错误信息
 ## 使用SDK
 **目前SDK随缘更新，碰到自己需要的API可能会随手写个SDK方便调用**
 

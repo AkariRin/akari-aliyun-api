@@ -53,7 +53,7 @@ class Api:
             string_to_sign = f"{self.algorithm}\n{hashlib.sha256(canonical_request.encode("utf-8")).hexdigest()}"
             signature = (hmac.new(self.access_key_secret.encode("utf-8"), string_to_sign.encode("utf-8"),
                                   hashlib.sha256).digest().hex().lower())
-            
+
             self.headers["Authorization"] = (f"{self.algorithm} Credential={self.access_key_id},"
                                              f"SignedHeaders={signed_headers},Signature={signature}")
         except Exception as e:
@@ -68,6 +68,9 @@ class Api:
             response = requests.request(method=self.http_method, url=url,
                                         headers={k: v for k, v in self.headers.items()}, data=self.body)
             response.raise_for_status()
-            return response.text
+            return {"status_code": response.status_code,
+                    "headers": response.headers,
+                    "body": response.text
+                    }
         except requests.RequestException as e:
             return e

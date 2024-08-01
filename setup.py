@@ -8,7 +8,6 @@ URL = "https://github.com/AkariRin/aliyun-api-py"
 EMAIL = "akaririn1028@gmail.com"
 AUTHOR = "Akari Rin"
 REQUIRES_PYTHON = ">=3.6.0"
-VERSION = "1.1.1"
 REQUIRED = ["requests", "pytz"]
 EXTRAS = {}
 
