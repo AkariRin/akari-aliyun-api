@@ -30,9 +30,10 @@ print(request.exec())
 ### 返回格式
 当请求正确发出时，返回格式如下：
 ```json
-{"status_code": "状态码",
- "headers": "响应头",
- "body": "返回的内容"
+{
+  "status_code": "状态码",
+  "headers": "响应头",
+  "body": "返回的内容"
 }
 ```
 若请求出错，则会抛出错误信息
@@ -49,3 +50,6 @@ print(request.reboot_instance(instance_id, force_stop, dry_run))
 ```
 ### ECS
 `ecs.reboot_instance(instance_id, force_stop, dry_run)`：重启ECS实例
+
+## TODO
+- [ ] 完善错误捕获的返回流程
