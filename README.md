@@ -8,7 +8,11 @@ import aliyun_api_py
 request = aliyun_api_py.Api(access_key_id, access_key_secret, http_method, host, uri, x_acs_action, x_acs_version,algorithm)
 request.param["your-param"] = "sth"
 request.body["your-body"] = "sth"
-print(request.exec())
+
+try:
+    print(request.exec())
+except ConnectionError as e:
+    print(e)
 ```
 `access_key_id`：阿里云AccessKey ID
 
@@ -33,10 +37,10 @@ print(request.exec())
 {
   "status_code": "状态码",
   "headers": "响应头",
-  "body": "返回的内容"
+  "body": "返回的内容，参见对应API文档"
 }
 ```
-若请求出错，则会抛出错误信息
+若请求出错（不包括HTTPError），则会抛出异常
 ## 使用SDK
 **目前SDK随缘更新，碰到自己需要的API可能会随手写个SDK方便调用**
 
@@ -50,6 +54,3 @@ print(request.reboot_instance(instance_id, force_stop, dry_run))
 ```
 ### ECS
 `ecs.reboot_instance(instance_id, force_stop, dry_run)`：重启ECS实例
-
-## TODO
-- [ ] 完善错误捕获的返回流程

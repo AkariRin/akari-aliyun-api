@@ -37,27 +37,24 @@ class Api:
         self.param = {k: v for k, v in sorted(self.param.items(), key=lambda item: item[0])}
 
         # 构造认证信息
-        try:
-            canonical_query_string = "&".join(
-                f"{percent_code(quote_plus(k))}={percent_code(quote_plus(str(v)))}" for k, v in
-                self.param.items())
-            hashed_request_payload = hashlib.sha256((self.body or "").encode("utf-8")).hexdigest()
-            self.headers["x-acs-content-sha256"] = hashed_request_payload
-            self.headers = {k: v for k, v in sorted(self.headers.items(), key=lambda item: item[0])}
+        canonical_query_string = "&".join(
+            f"{percent_code(quote_plus(k))}={percent_code(quote_plus(str(v)))}" for k, v in
+            self.param.items())
+        hashed_request_payload = hashlib.sha256((self.body or "").encode("utf-8")).hexdigest()
+        self.headers["x-acs-content-sha256"] = hashed_request_payload
+        self.headers = {k: v for k, v in sorted(self.headers.items(), key=lambda item: item[0])}
 
-            signed_headers = ";".join(sorted(self.headers.keys(), key=lambda x: x.lower()))
-            canonical_request = (f"{self.http_method}\n{self.canonical_uri}\n{canonical_query_string}\n"
-                                 f"{"\n".join(f"{k.lower()}:{v}" for k, v in self.headers.items() if
-                                              k.lower().startswith("x-acs-") or k.lower() in ["host", "content-type"])}"
-                                 f"\n\n{signed_headers}\n{hashed_request_payload}")
-            string_to_sign = f"{self.algorithm}\n{hashlib.sha256(canonical_request.encode("utf-8")).hexdigest()}"
-            signature = (hmac.new(self.access_key_secret.encode("utf-8"), string_to_sign.encode("utf-8"),
-                                  hashlib.sha256).digest().hex().lower())
+        signed_headers = ";".join(sorted(self.headers.keys(), key=lambda x: x.lower()))
+        canonical_request = (f"{self.http_method}\n{self.canonical_uri}\n{canonical_query_string}\n"
+                             f"{"\n".join(f"{k.lower()}:{v}" for k, v in self.headers.items() if
+                                          k.lower().startswith("x-acs-") or k.lower() in ["host", "content-type"])}"
+                             f"\n\n{signed_headers}\n{hashed_request_payload}")
+        string_to_sign = f"{self.algorithm}\n{hashlib.sha256(canonical_request.encode("utf-8")).hexdigest()}"
+        signature = (hmac.new(self.access_key_secret.encode("utf-8"), string_to_sign.encode("utf-8"),
+                              hashlib.sha256).digest().hex().lower())
 
-            self.headers["Authorization"] = (f"{self.algorithm} Credential={self.access_key_id},"
-                                             f"SignedHeaders={signed_headers},Signature={signature}")
-        except Exception as e:
-            return e
+        self.headers["Authorization"] = (f"{self.algorithm} Credential={self.access_key_id},"
+                                         f"SignedHeaders={signed_headers},Signature={signature}")
 
         # 发起请求
         url = f"https://{self.host}{self.canonical_uri}"
@@ -72,5 +69,10 @@ class Api:
                     "headers": response.headers,
                     "body": response.text
                     }
+        except requests.exceptions.HTTPError as e:
+            return {"status_code": e.response.status_code,
+                    "headers": e.response.headers,
+                    "body": e.response.text
+                    }
         except requests.RequestException as e:
-            return e
+            raise ConnectionError(e)
